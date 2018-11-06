@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.item0 { grid-area: pair }
+.item1 { grid-area: one; height: 100%}
+.item2 { grid-area: two; height: 100%}
+.item3 { grid-area: three; height: 100%}
+
+
+
+.grid-container {
+
+  display: inline-grid;
+  grid-template-areas:
+    'pair three'
+    'pair three';
+  grid-gap: 2px;
+  background-color: #2196F3;
+}
+.grid-container > div {
+height: 244px;
+width: 122px;
+grid-gap: 2px;
+display: inline-grid;
+  
+  text-align: center;
+  grid-template-areas:
+    'one'
+    'two';
+
+
+}
+</style>
+</head>
+<body>
+
+<div class="grid-container">
+  <img class="item3" src="http://www.minardcapital.com/images/new/osf-img-upload/_framed/mourad-82714520-photo.jpg" alt=".."/>
+    <div class="item0">
+    <img class="item1" src="http://www.minardcapital.com/images/new/osf-img-upload/_framed/mourad-82714520-photo.jpg" alt=".."/>
+  <img class="item2" src="http://www.minardcapital.com/images/new/osf-img-upload/_framed/mourad-82714520-photo.jpg" alt=".."/>
+  </div>
+
+
+</div>
+
+
+</body>
+</html>
