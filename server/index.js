@@ -3,11 +3,14 @@ const bodyParser = require('body-parser');
 const model = require('./model.js');
 const path = require('path');
 const morgan = require('morgan');
+const db = require('../db/database.js');
 let app = express();
 app.use(morgan('dev'));
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+///////////////////////////////////////////
 
 // app.post('/header', function (req, res) {
 //   console.log('id: ', req.body.id)
