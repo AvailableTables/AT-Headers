@@ -55,7 +55,7 @@ const generateNames = (callback) => {
   let data = ''
   for (let i = 0; i < 1000000; i++) {
     let company = names.restaurants[Math.floor(Math.random() * 1000)]
-    data += i + '|' + company + '\n';
+    data += company + '\n';
   }
 
   writeData(`./names.txt`, data, callback)
@@ -114,7 +114,9 @@ const promisifyFunction = (funcCreate, funcLoad, path) => {
 
 
 // promisifyFunction(generateImages, loadImages, './images.txt');
-promisifyFunction(generateNames, loadNames, './names.txt');
+//promisifyFunction(generateNames, loadNames, './names.txt');
+
+writeData('./names.txt', 'hi, Liz', ()=>{console.log('done')});
 
     // generate company names
 // for (let i = 0; i < 1000; i++) {
