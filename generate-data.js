@@ -17,25 +17,9 @@ const deleteFile = (callback, path) => {
   });
 }
 
-const loadImages = (callback) => {
-  let q = `LOAD DATA LOCAL INFILE './images.txt' INTO TABLE images
-          FIELDS TERMINATED BY '|'
-          (image, restaurant_id)
-          SET id = NULL;
-  `
-  console.log('about to insert file...')
-  db.query(q, (err) => {
-    if (err) console.log('error on LOADING txt file: ', err);
-    else {
-      console.log('query performed successfully')
-      callback();
-    }
-  });
-}
-
-const loadNames = (callback) => {
-  const stream = db.client.query(copyFrom(`COPY restaurants FROM STDIN DELIMITER '|'`));
-  const fileStream = fs.createReadStream('./names.csv');
+const loadData = (callback, table) => {
+  const stream = db.client.query(copyFrom(`COPY ${table} FROM STDIN DELIMITER '|'`));
+  const fileStream = fs.createReadStream(`./${table}.csv`);
 
   fileStream.on('error', (err) =>{
     console.log('error in reading file: ', err)
@@ -57,37 +41,37 @@ const generateNames = (callback, startingId) => {
   let id = startingId * 1000000 + 1;
   let endingId = startingId * 1000000 + 1000001;
 
-  //writeData('./names.csv', 'id|name\n', () => {});
   for (let i = id; i < endingId; i++) {
     let company = names.restaurants[Math.floor(Math.random() * 1000)]
     if (i === endingId - 1) data += i + '|' + company; 
     else data += i + '|' + company + '\n';
   }
 
-  writeData(`./names.csv`, data, callback)
+  writeData(`./restaurants.csv`, data, callback)
 }
 
 var count = 1;
 const images = require('./data/images.js');
-const generateImages = (callback) => {
+const generateImages = (callback, startingId) => {
   
+  let id = startingId * 1000000 + 1;
+  let endingId = startingId * 1000000 + 1000001;
   let data = '';
-  for (let i = 0; i < 1000000; i++) {
+  for (let i = id; i < endingId; i++) {
 
     let numberOfImages = Math.floor(Math.random() * 8) + 1;
-    for (let i = 0; i < numberOfImages; i++) {
+    for (let j = 0; j < numberOfImages; j++) {
       let image = images.images[Math.floor(Math.random() * 1000)]
-      data += image + '|' + count + '\n'
+      data += count + '|' + image + '|' + i + '\n'
+      count++
     }
-
-    count++
   }
 
-  writeData('./images.txt', data, callback);
+  writeData('./images.csv', data, callback);
 }
 
 var runCounter = 0;
-const promisifyFunction = (funcCreate, funcLoad, path) => {
+const promisifyFunction = (funcCreate, table) => {
   console.log('runCounter is: ', runCounter);
   if (runCounter === 10) {
     console.log('ALL DONE')
@@ -99,18 +83,18 @@ const promisifyFunction = (funcCreate, funcLoad, path) => {
   .then( () => {
     console.log('file created, loading file...')
     return new Promise ( (resolve) => {
-      funcLoad( () => {resolve()});
+      loadData( () => {resolve()}, table);
     })
   })
   .then ( () => {
     return new Promise( (resolve) => {
-      deleteFile( () => {resolve()}, path);
+      deleteFile( () => {resolve()}, `./${table}.csv`);
     })
   })
   .then( () => {
     console.log('file wiped, starting next batch...')
     runCounter++;
-    promisifyFunction(funcCreate, funcLoad, path);
+    promisifyFunction(funcCreate, table);
   })
   .catch( (err) => {
     console.log('error in Promise chain: ', err);
@@ -118,8 +102,8 @@ const promisifyFunction = (funcCreate, funcLoad, path) => {
 }
 
 
-// promisifyFunction(generateImages, loadImages, './images.txt');
-promisifyFunction(generateNames, loadNames, './names.csv');
+promisifyFunction(generateImages, 'images');
+// promisifyFunction(generateNames, 'restaurants');
 
     // generate company names
 // for (let i = 0; i < 1000; i++) {
