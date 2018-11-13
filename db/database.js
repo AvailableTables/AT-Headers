@@ -1,12 +1,13 @@
-const mysql = require('mysql');
-//const mysqlConfig = require('../config.js');
+const { Client } = require('pg')
 
-const connection = mysql.createConnection({
-  user: 'root',
+const client = new Client({
+  user: 'postgres',
   password: 'JSangiolo92010!',
-  database: 'test'
+  database: 'headers'
 });
 
-connection.connect();
+client.connect();
+console.log('db connected');
 
-module.exports = connection;
+module.exports.client = client;
+

@@ -1,6 +1,7 @@
-var faker = require('faker');
-var db = require('./db/database.js');
-var fs = require('fs');
+const faker = require('faker');
+const db = require('./db/database.js');
+const fs = require('fs');
+const copyFrom = require('pg-copy-streams').from
 
 const writeData = (path, data, callback) => {
   fs.appendFile(path, data, (err) => {
@@ -33,32 +34,37 @@ const loadImages = (callback) => {
 }
 
 const loadNames = (callback) => {
-  let q = `LOAD DATA LOCAL INFILE './names.txt' INTO TABLE restaurants
-          FIELDS TERMINATED BY '\n'
-          (name)
-          SET id = NULL;
-  `
-  console.log('about to insert file...')
-  db.query(q, (err) => {
-    if (err) console.log('error on LOADING txt file: ', err);
-    else {
-      console.log('query performed successfully')
-      callback();
-    }
-  });
+  const stream = db.client.query(copyFrom(`COPY restaurants FROM STDIN DELIMITER '|'`));
+  const fileStream = fs.createReadStream('./names.csv');
+
+  fileStream.on('error', (err) =>{
+    console.log('error in reading file: ', err)
+  })
+  stream.on('error', (err) => {
+    console.log('error in copy command: ', err)
+  })
+  stream.on('end', () => {
+    console.log('file loaded')
+    callback()
+  })
+  fileStream.pipe(stream);
 }
 
-
 const names = require('./data/restaurants.js')
-const generateNames = (callback) => {
+const generateNames = (callback, startingId) => {
 
   let data = ''
-  for (let i = 0; i < 1000000; i++) {
+  let id = startingId * 1000000 + 1;
+  let endingId = startingId * 1000000 + 1000001;
+
+  //writeData('./names.csv', 'id|name\n', () => {});
+  for (let i = id; i < endingId; i++) {
     let company = names.restaurants[Math.floor(Math.random() * 1000)]
-    data += company + '\n';
+    if (i === endingId - 1) data += i + '|' + company; 
+    else data += i + '|' + company + '\n';
   }
 
-  writeData(`./names.txt`, data, callback)
+  writeData(`./names.csv`, data, callback)
 }
 
 var count = 1;
@@ -88,7 +94,7 @@ const promisifyFunction = (funcCreate, funcLoad, path) => {
     return;
   }
   return new Promise( (resolve) => {
-    funcCreate(() => {resolve()});
+    funcCreate(() => {resolve()}, runCounter);
   })
   .then( () => {
     console.log('file created, loading file...')
@@ -97,7 +103,6 @@ const promisifyFunction = (funcCreate, funcLoad, path) => {
     })
   })
   .then ( () => {
-    console.log('file loaded')
     return new Promise( (resolve) => {
       deleteFile( () => {resolve()}, path);
     })
@@ -114,9 +119,7 @@ const promisifyFunction = (funcCreate, funcLoad, path) => {
 
 
 // promisifyFunction(generateImages, loadImages, './images.txt');
-//promisifyFunction(generateNames, loadNames, './names.txt');
-
-writeData('./names.txt', 'hi, Liz', ()=>{console.log('done')});
+promisifyFunction(generateNames, loadNames, './names.csv');
 
     // generate company names
 // for (let i = 0; i < 1000; i++) {

@@ -7,14 +7,16 @@ CREATE DATABASE headers;
 -- ---------------------------------
 -- Restaurant Table---------------------
 
-CREATE TABLE restaurant (
+DROP TABLE IF EXISTS restaurants;
+CREATE TABLE restaurants (
     id INT,
-    name VARCHAR(30)
+    name VARCHAR(200)
 );
 
 -- ---------------------------------
 -- Images Table---------------------
 
+DROP TABLE IF EXISTS images;
 CREATE TABLE images (
     id INT,
     image VARCHAR(200),
