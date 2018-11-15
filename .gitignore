@@ -2,3 +2,5 @@ node_modules
 client/dist/bundle.js
 config.js
 tableOpenHeader.pem
+images.csv
+restaurants.csv
