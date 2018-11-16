@@ -1,5 +1,5 @@
 const faker = require('faker');
-const db = require('./db/database.js');
+const db = require('./database.js');
 const fs = require('fs');
 const copyFrom = require('pg-copy-streams').from
 
@@ -34,7 +34,7 @@ const loadData = (callback, table) => {
   fileStream.pipe(stream);
 }
 
-const names = require('./data/restaurants.js')
+const names = require('../data/restaurants.js')
 const generateNames = (callback, startingId) => {
 
   let data = ''
@@ -51,7 +51,7 @@ const generateNames = (callback, startingId) => {
 }
 
 var count = 1;
-const images = require('./data/images.js');
+const images = require('../data/images.js');
 const generateImages = (callback, startingId) => {
   
   let id = startingId * 1000000 + 1;
