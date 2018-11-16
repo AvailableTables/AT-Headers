@@ -17,6 +17,13 @@ const deleteFile = (callback, path) => {
   });
 }
 
+const addIndex = (callback) => {
+  db.client.query(`CREATE INDEX ON images(restaurant_id)`, (err) => {
+    if (err) console.log('error on creating index: ', err);
+    else callback();
+  })
+}
+
 const loadData = (callback, table) => {
   const stream = db.client.query(copyFrom(`COPY ${table} FROM STDIN DELIMITER '|'`));
   const fileStream = fs.createReadStream(`./${table}.csv`);
@@ -75,9 +82,10 @@ let startTime = new Date();
 const promisifyFunction = (funcCreate, table) => {
   console.log('runCounter is: ', runCounter);
   if (runCounter === 10) {
-    console.log('ALL DONE')
-    let endTime = new Date();
-    console.log('Data generated + loaded in ', (endTime - startTime) / 1000, ' seconds');
+    if (table === 'images') addIndex( (startTime) => {
+      console.log('Index created')
+      console.log('Data generated + loaded in ', (new Date() - startTime) / 1000, ' seconds');
+    })
     return;
   }
   return new Promise( (resolve) => {
