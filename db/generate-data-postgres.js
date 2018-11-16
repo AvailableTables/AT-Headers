@@ -71,10 +71,13 @@ const generateImages = (callback, startingId) => {
 }
 
 var runCounter = 0;
+let startTime = new Date();
 const promisifyFunction = (funcCreate, table) => {
   console.log('runCounter is: ', runCounter);
   if (runCounter === 10) {
     console.log('ALL DONE')
+    let endTime = new Date();
+    console.log('Data generated + loaded in ', (endTime - startTime) / 1000, ' seconds');
     return;
   }
   return new Promise( (resolve) => {
@@ -101,9 +104,8 @@ const promisifyFunction = (funcCreate, table) => {
   })
 }
 
-
-promisifyFunction(generateImages, 'images');
 // promisifyFunction(generateNames, 'restaurants');
+promisifyFunction(generateImages, 'images');
 
     // generate company names
 // for (let i = 0; i < 1000; i++) {
