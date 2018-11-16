@@ -13,3 +13,9 @@ let imagesSchema = mongoose.Schema({
 })
 
 let Images = mongoose.model('Images', imagesSchema);
+
+let findImages = (id) => {
+  return Images.find({id: id}).exec();
+}
+
+module.exports.findImages = findImages;

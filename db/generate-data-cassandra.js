@@ -1,5 +1,3 @@
-const cassandra = require('cassandra-driver');
-const db = new cassandra.Client({ contactPoints: ['localhost:9042'], keyspace: 'headers' });
 const fs = require('fs');
 
 const stream = fs.createWriteStream('images.csv');
