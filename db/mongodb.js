@@ -11,3 +11,5 @@ let imagesSchema = mongoose.Schema({
   name: String,
   images: Array
 })
+
+let Images = mongoose.model('Images', imagesSchema);
