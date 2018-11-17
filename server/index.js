@@ -13,19 +13,35 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Postgres GET
-// app.get('/api/header/:id', (req, res) => {
-//   let id = req.params.id;
-//   pg.client.query(`SELECT * FROM images where restaurant_id = ${id};`)
-//   .then( (results) => res.send(results.rows))
-//   .catch( (err) => {res.sendStatus(500)})
-// })
-
-// MongoDB GET
 app.get('/api/header/:id', (req, res) => {
   let id = req.params.id;
-  mongo.findImages(id)
-  .then( (results) => res.send(results[0].images));
+  pg.client.query(`SELECT image FROM images where restaurant_id = ${id};`)
+  .then( (results) => res.send({
+    images: results.rows.map(image => image.image),
+    currentLocation: {
+      country: 'United States',
+      metro: 'New York / Tri-State Area',
+      region: 'Manhattan',
+      community: 'Theater District / Times Square'
+    }
+  }))
+  .catch( (err) => {res.sendStatus(500)})
 })
+
+// MongoDB GET
+// app.get('/api/header/:id', (req, res) => {
+//   let id = req.params.id;
+//   mongo.findImages(id)
+//   .then( (results) => res.send({
+//     images: results[0].images,
+    // currentLocation: {
+    //   country: 'United States',
+    //   metro: 'New York / Tri-State Area',
+    //   region: 'Manhattan',
+    //   community: 'Theater District / Times Square'
+    // }
+//   }));
+// })
 
 // // Cassandra GET
 // app.get('/api/header/:id', (req, res) => {
@@ -33,27 +49,6 @@ app.get('/api/header/:id', (req, res) => {
 //   cassandra.getImages(id)
 //   .then ( (results) => res.send(results.rows[0].images));
 // })
-
-
-///////////////////////////////////////////
-
-app.post('/header', function (req, res) {
-  console.log('id: ', req.body.id)
-  model.getImagesFromDb(req.body.id, (images) => {
-    // console.log(images);
-    console.log('images controller: ', images);
-    res.send({
-      images,
-      currentLocation: {
-        country: 'United States',
-        metro: 'New York / Tri-State Area',
-        region: 'Manhattan',
-        community: 'Theater District / Times Square'
-      }
-    });
-  });
-
-});
 
 app.get('/header', function (req, res) {
   // TODO - your code here!
