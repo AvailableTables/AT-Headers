@@ -7,7 +7,7 @@ if(process.env.MLAB_URI) {
 }
 
 let imagesSchema = mongoose.Schema({
-  id: {type: Number, unique: true},
+  id: {type: Number, unique: true, index: true},
   name: String,
   images: Array
 })
