@@ -27,10 +27,11 @@ class App extends React.Component {
     let url = window.location.href.split('/');
     var id = url[url.length - 1];
     console.log(id);
-    axios.post('/header', { id })
-      .then((res) => {
-        this.setState({ images: res.data.images })
-        this.setState({ currentLocation: res.data.currentLocation })
+    axios.get('/api/header/' + id)
+      .then(({data}) => {
+        console.log(data);
+        this.setState({ images: data.images })
+        this.setState({ currentLocation: data.currentLocation })
       })
     axios.get('/header')
       .then((res) => {
