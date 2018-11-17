@@ -13,19 +13,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Postgres GET
-app.get('/api/header/:id', (req, res) => {
-  let id = req.params.id;
-  pg.client.query(`SELECT * FROM images where restaurant_id = ${id};`)
-  .then( (results) => res.send(results.rows))
-  .catch( (err) => {res.sendStatus(500)})
-})
-
-// MongoDB GET
 // app.get('/api/header/:id', (req, res) => {
 //   let id = req.params.id;
-//   mongo.findImages(id)
-//   .then( (results) => res.send(results[0].images));
+//   pg.client.query(`SELECT * FROM images where restaurant_id = ${id};`)
+//   .then( (results) => res.send(results.rows))
+//   .catch( (err) => {res.sendStatus(500)})
 // })
+
+// MongoDB GET
+app.get('/api/header/:id', (req, res) => {
+  let id = req.params.id;
+  mongo.findImages(id)
+  .then( (results) => res.send(results[0].images));
+})
 
 // // Cassandra GET
 // app.get('/api/header/:id', (req, res) => {
