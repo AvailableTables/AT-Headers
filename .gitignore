@@ -4,3 +4,5 @@ config.js
 tableOpenHeader.pem
 images.csv
 restaurants.csv
+newrelic.js
+newrelic_agent.log
