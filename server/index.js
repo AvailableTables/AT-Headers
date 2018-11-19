@@ -1,13 +1,14 @@
+const newRelic = require('newrelic');
 const express = require('express');
 const bodyParser = require('body-parser');
 const model = require('./model.js');
 const path = require('path');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const pg = require('../db/database.js');
-const mongo = require('../db/mongodb.js');
-const cassandra = require('../db/cassandradb.js');
+// const mongo = require('../db/mongodb.js');
+// const cassandra = require('../db/cassandradb.js');
 let app = express();
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -16,15 +17,17 @@ app.use(bodyParser.json());
 app.get('/api/header/:id', (req, res) => {
   let id = req.params.id;
   pg.client.query(`SELECT image FROM images where restaurant_id = ${id};`)
-  .then( (results) => res.send({
-    images: results.rows.map(image => image.image),
-    currentLocation: {
-      country: 'United States',
-      metro: 'New York / Tri-State Area',
-      region: 'Manhattan',
-      community: 'Theater District / Times Square'
-    }
-  }))
+  .then( (results) => {
+    res.send({
+      images: results.rows.map(image => image.image),
+      currentLocation: {
+        country: 'United States',
+        metro: 'New York / Tri-State Area',
+        region: 'Manhattan',
+        community: 'Theater District / Times Square'
+      }
+    })
+  })
   .catch( (err) => {res.sendStatus(500)})
 })
 
