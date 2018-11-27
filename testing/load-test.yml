@@ -1,11 +1,13 @@
 config:
   target: 'http://localhost:3040'
   phases:
-    - duration: 60
-      arrivalRate: 300
+    - duration: 600
+      arrivalRate: 200
   processor: './randomID.js'
 scenarios:
-  - flow:
+  - name: 'Get Request'
+    flow:
     - function: "randomID"
     - get:
         url: "/api/header/{{ id }}"
+    # - log: '{{ id }}'
