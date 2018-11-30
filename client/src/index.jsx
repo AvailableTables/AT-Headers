@@ -52,7 +52,8 @@ class App extends React.Component {
 }
 
 // ReactDOM.render(<App />, document.getElementById('app'));
-window.Headers = App;
+// window.Headers = App;
+export default App;
 
 
 
