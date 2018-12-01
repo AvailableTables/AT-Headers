@@ -1,8 +1,10 @@
 node_modules
 client/dist/bundle.js
+client/dist/bundle-server.js
 config.js
 tableOpenHeader.pem
 images.csv
 restaurants.csv
 newrelic.js
 newrelic_agent.log
+sdc.pem
