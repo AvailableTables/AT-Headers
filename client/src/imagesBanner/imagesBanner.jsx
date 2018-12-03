@@ -47,6 +47,7 @@ class ImagesBanner extends React.Component {
 
 
   render() {
+    
     var images = this.props.images;
     if (images.length < 9 && images.length > 6) {
       images = images.slice(0, 5);
