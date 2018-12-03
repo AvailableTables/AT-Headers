@@ -27,12 +27,21 @@ const server = {
   entry: `${SRC_DIR}/server.js`,
   output: {
     filename: 'bundle-server.js',
-    path: DIST_DIR
+    path: DIST_DIR,
+    libraryTarget: 'commonjs2'
   },
   module : {
     loaders : [
       {
         test : /\.jsx?/,
+        include : SRC_DIR,
+        loader : 'babel-loader',      
+        query: {
+          presets: ['react', 'es2015']
+        }
+      },
+      {
+        test : /\.js?/,
         include : SRC_DIR,
         loader : 'babel-loader',      
         query: {
