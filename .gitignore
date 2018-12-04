@@ -8,3 +8,4 @@ restaurants.csv
 newrelic.js
 newrelic_agent.log
 *.pem
+ssh.exe.stackdump
