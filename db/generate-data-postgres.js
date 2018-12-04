@@ -78,14 +78,15 @@ const generateImages = (callback, startingId) => {
 }
 
 var runCounter = 0;
-let startTime = new Date();
 const promisifyFunction = (funcCreate, table) => {
+  let startTime = new Date();
   console.log('runCounter is: ', runCounter);
   if (runCounter === 10) {
     if (table === 'images') addIndex( (startTime) => {
       console.log('Index created')
       console.log('Data generated + loaded in ', (new Date() - startTime) / 1000, ' seconds');
     })
+    console.log('ALL DONE');
     return;
   }
   return new Promise( (resolve) => {
@@ -112,8 +113,10 @@ const promisifyFunction = (funcCreate, table) => {
   })
 }
 
-// promisifyFunction(generateNames, 'restaurants');
-promisifyFunction(generateImages, 'images');
+module.exports = {
+  names: function() {promisifyFunction(generateNames, 'restaurants')},
+  images: function() {promisifyFunction(generateImages, 'images')}
+}
 
     // generate company names
 // for (let i = 0; i < 1000; i++) {
