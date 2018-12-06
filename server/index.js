@@ -60,6 +60,10 @@ app.get('/restaurants/:id', async (req, res) => {
   `)
 })
 
+app.get('/renderHeaders', async (req, res) => {
+  res.send(await getData(req.query.id));
+})
+
 // Postgres GET
 // app.get('/api/header/:id', (req, res) => {
 //   let id = req.params.id;
@@ -99,19 +103,6 @@ app.get('/restaurants/:id', async (req, res) => {
 //   cassandra.getImages(id)
 //   .then ( (results) => res.send(results.rows[0].images));
 // })
-
-// app.get('/header', function (req, res) {
-//   // TODO - your code here!
-//   res.send({
-//     metros: { 0: `New York / Tri-State Area`, 1: `Orange County`, 2: `Philadeplhia Area` },
-    // regions: {
-    //   0: [`Manhattan`, `New Jersey - North`, `New Jersey - Central`],
-    //   1: [`All Orange County`, `North Orange County`, `South Orange County`],
-    //   2: [`Philadelphia`, `Western Suburbs`, `New Jersey Suburbs`]
-    // }
-
-//   });
-// });
 
 app.post('/options', (req, res) => {
   console.log(req.body);
