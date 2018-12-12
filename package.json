@@ -6,9 +6,9 @@
   "scripts": {
     "react-dev": "webpack -d --watch",
     "server-dev": "nodemon ./server/index.js",
-    "schema": "psql -U postgres -f db/schema.sql",
-    "populate-names": "node -e 'require(\"./db/generate-data-postgres.js\").names()'",
-    "populate-images": "node -e 'require(\"./db/generate-data-postgres.js\").images()'",
+    "schema": "psql -U postgres -f db/postgres/schema.sql",
+    "populate-names": "node -e 'require(\"./db/postgres/generate-data-postgres.js\").names()'",
+    "populate-images": "node -e 'require(\"./db/postgres/generate-data-postgres.js\").images()'",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
     "connect": "ssh -i \"tableOpenHeader.pem\" ubuntu@ec2-18-222-140-125.us-east-2.compute.amazonaws.com",
