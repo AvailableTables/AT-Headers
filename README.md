@@ -1,6 +1,5 @@
 # AT-Headers
-
-This micro-service displays the header images for each restaurant in the AvailableTable application.
+This project aims to scale the backend of an existing component within an OpenTable clone built by another developer.  The component displays header images for each restuarant in the application.
 
 
 ## Getting Started
