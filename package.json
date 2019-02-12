@@ -9,15 +9,12 @@
     "schema": "psql -U postgres -f db/postgres/schema.sql",
     "populate-names": "node -e 'require(\"./db/postgres/generate-data-postgres.js\").names()'",
     "populate-images": "node -e 'require(\"./db/postgres/generate-data-postgres.js\").images()'",
-    "migrate": "knex migrate:latest",
-    "rollback": "knex migrate:rollback",
-    "connect": "ssh -i \"tableOpenHeader.pem\" ubuntu@ec2-18-222-140-125.us-east-2.compute.amazonaws.com",
     "start-pm2": "pm2 start ./server/index.js",
     "list-pm2": "pm2 list",
     "pm2-server": "pm2 show server",
     "stop-pm2": "pm2 stop 0",
-    "aws-db-connect": "chmod 400 sdcpg.pem  && ssh -i \"sdcpg.pem\" ubuntu@ec2-18-224-107-139.us-east-2.compute.amazonaws.com",
-    "aws-connect": "chmod 400 sdc.pem  && ssh -i \"sdc.pem\" ubuntu@ec2-18-222-211-173.us-east-2.compute.amazonaws.com"
+    "aws-db-connect": "chmod 400 sdcpg.pem  && ssh -i \"sdcpg.pem\" ubuntu@ec2-13-59-236-7.us-east-2.compute.amazonaws.com",
+    "aws-connect": "chmod 400 sdc.pem  && ssh -i \"sdc.pem\" ubuntu@ec2-18-220-165-111.us-east-2.compute.amazonaws.com"
   },
   "author": "Beth Johnson",
   "license": "ISC",

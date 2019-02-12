@@ -1,4 +1,3 @@
-const faker = require('faker');
 const db = require('./database.js');
 const fs = require('fs');
 const copyFrom = require('pg-copy-streams').from
@@ -79,12 +78,11 @@ const generateImages = (callback, startingId) => {
 
 var runCounter = 0;
 const promisifyFunction = (funcCreate, table) => {
-  let startTime = new Date();
+
   console.log('runCounter is: ', runCounter);
   if (runCounter === 10) {
-    if (table === 'images') addIndex( (startTime) => {
+    if (table === 'images') addIndex( () => {
       console.log('Index created')
-      console.log('Data generated + loaded in ', (new Date() - startTime) / 1000, ' seconds');
     })
     console.log('ALL DONE');
     return;
@@ -118,18 +116,3 @@ module.exports = {
   images: function() {promisifyFunction(generateImages, 'images')}
 }
 
-    // generate company names
-// for (let i = 0; i < 1000; i++) {
-//   let company = faker.company.companyName();
-//   fs.appendFile('./companies.txt', `\`${company}\`,${'\n'}`, (err) => {
-//     if (err) console.log(err);
-//   })
-// }
-
-// generate images
-// for (let i = 0; i < 1000; i++) {
-//   let image = `https://picsum.photos/200/300/?${Math.floor(Math.random() * 100000)}`
-//   fs.appendFile('./images', `\`${image}\`,${'\n'}`, (err) => {
-//     if (err) console.log(err);
-//   })
-// }
